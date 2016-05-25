@@ -15,7 +15,8 @@ BUILD_OPTS+=(-g)
 SRC_FILES=()
 SRC_FILES+=(music.c)
 SRC_FILES+=(wav.c)
-SCR_FILES+=(NoteSequence.c)
+SRC_FILES+=(note.c)
+SRC_FILES+=(NoteSequence.c)
 
 # Base Command
 BUILD_CMD=(gcc)

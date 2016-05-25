@@ -1,14 +1,20 @@
+#include <stdlib.h>
+
 #include "wav.h"
 #include "string.h"
 
-int BuildWavFile(char* name, WavFile* file)
+WavFile* BuildWavFile (char* name)
 {
+  WavFile* file;
+
+  file = malloc (sizeof (WavFile));
   strncpy (file->Name, name, MAX_WAV_FILE_NAME);
-  return 0;
+
+  return file;
 }
 
-int DestroyWavFile(WavFile* file)
+void DestroyWavFile(WavFile* file)
 {
   strcpy (file->Name, "");
-  return 0;
+  free (file);
 }

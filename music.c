@@ -22,6 +22,6 @@ void BuildTestFile(WavFile** testFile)
 {
   char* wavName = "TestName";
   *testFile = malloc (sizeof (WavFile));
-  BuildWavFile(wavName, *testFile);
+  *testFile = BuildWavFile(wavName);
 }
 

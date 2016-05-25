@@ -15,8 +15,11 @@ typedef enum
 
 typedef struct
 {
-  Notes Letter;
+  Notes Value;
   unsigned int Duration;
 } Note;
+
+Note* BuildNote(Notes value, unsigned int duration);
+void DestroyNote(Note* note);
 
 #endif
