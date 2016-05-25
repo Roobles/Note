@@ -4,12 +4,11 @@
 
 // Static Function Declarations
 static Note* NextNote_Internal (NoteSequence* sequence);
-static Note* PriorNote_Internal (NoteSequence* sequence);
 static void AddNote_Internal (NoteSequence* sequence, Note* note);
 static void Reset_Internal (NoteSequence* sequence);
 
 // NoteSequence.h Implementation
-NoteIttr* BuildNoteIttr(Note* note, NoteIttr* prior, NoteIttr* next)
+NoteIttr* BuildNoteIttr(Note* note, NoteIttr* next)
 {
   // TODO: Implement this.
   
@@ -18,7 +17,6 @@ NoteIttr* BuildNoteIttr(Note* note, NoteIttr* prior, NoteIttr* next)
   ittr = malloc (sizeof (NoteIttr));
   ittr->Note = note;
   ittr->NextNote = next;
-  ittr->PriorNote = prior;
 
   return ittr;
 }
@@ -26,21 +24,16 @@ NoteIttr* BuildNoteIttr(Note* note, NoteIttr* prior, NoteIttr* next)
 void DestroyNoteIttr(NoteIttr* ittr)
 {
   Note* note;
-  struct NoteIttr *next, *prior;
+  NoteIttr *next;
   if(ittr == NULL)
     return;
 
   next = ittr->NextNote;
-  prior = ittr->PriorNote;
 
   if(next != NULL)
     DestroyNoteIttr(next);
 
   note = ittr->Note;
-  
-  if (next != NULL) free (next);
-  if (prior != NULL) free (prior);
-
   DestroyNote(note);
   free (ittr);
 }
@@ -55,10 +48,8 @@ NoteSequence* BuildNoteSequence()
 
   sequence->CurrentNote = NULL;
   sequence->FirstNote = NULL;
-  sequence->LastNote = NULL;
 
   sequence->NextNote = NextNote_Internal;
-  sequence->PriorNote = PriorNote_Internal;
   sequence->AddNote = AddNote_Internal;
   sequence->Reset = Reset_Internal;
 
@@ -76,10 +67,8 @@ void DestroyNoteSequence(NoteSequence* sequence)
 
   sequence->CurrentNote = NULL;
   sequence->FirstNote = NULL;
-  sequence->LastNote = NULL;
 
   sequence->NextNote = NULL;
-  sequence->PriorNote = NULL;
   sequence->AddNote = NULL;
   sequence->Reset = NULL;
 
@@ -90,15 +79,14 @@ void DestroyNoteSequence(NoteSequence* sequence)
 static Note* NextNote_Internal (NoteSequence* sequence)
 {
   NoteIttr** current;
-  *current = sequence->CurrentNote;
-  if(*current == NULL || sequence->FirstNote == NULL || sequence->LastNote == NULL)
+
+  if(sequence == NULL || (current = &sequence->CurrentNote) == NULL || *current == NULL || sequence->FirstNote == NULL)
     return NULL;
   
-  return NULL;
-}
-
-static Note* PriorNote_Internal (NoteSequence* sequence)
-{
+  *current = (*current)->NextNote;
+  return (*current == NULL)
+    ? NULL
+    : (*current)->Note;
 }
 
 static void AddNote_Internal (NoteSequence* sequence, Note* note)
