@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "score.h"
 
-Score* BuildScore (Tempo tempo, NoteSequence* sequence)
+Score* BuildScore (Tempo* tempo, NoteSequence* sequence)
 {
   Score* score;
 
@@ -15,7 +15,7 @@ Score* BuildScore (Tempo tempo, NoteSequence* sequence)
 void DestroyScore (Score* score)
 {
   if (score == NULL) return;
-  score->Tempo = 0x0;
+  DestroyTempo (score->Tempo);
   DestroyNoteSequence (score->Notes);
   free (score);
 }
@@ -30,6 +30,6 @@ void PrintScore (Score* score)
 
   seq->Reset (seq);
   for (note = seq->NextNote(seq); note != NULL; note = seq->NextNote(seq))
-    printf ("Note: %d  Duration: %d\n", note->Value, note->Duration);
+    printf ("Pitch: %d  Value: %d\n", note->Pitch, note->Value);
   
 }

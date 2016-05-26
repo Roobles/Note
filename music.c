@@ -7,6 +7,7 @@
 WavFile* BuildTestFile();
 NoteSequence* BuildTestNoteSequence();
 Score* BuildTestScore();
+Tempo* BuildTestTempo();
 void AddTestNotes(NoteSequence* sequence);
 
 // Main
@@ -19,23 +20,21 @@ int main (int argc, char** argv)
   score = testFile->Score;
 
   PrintScore (score);
-  
-
   DestroyWavFile (testFile);
 
   return 0;
 }
 
 // Functions
-WavFile* BuildTestFile()
+WavFile* BuildTestFile ()
 {
   char* wavName = "TestName";
   NoteSequence* sequence;
   Score* score;
   WavFile* testFile;
 
-  score = BuildTestScore();
-  testFile = BuildWavFile(wavName, score);
+  score = BuildTestScore ();
+  testFile = BuildWavFile (wavName, score);
 
   return testFile;
 }
@@ -43,12 +42,22 @@ WavFile* BuildTestFile()
 Score* BuildTestScore()
 {
   Score* score;
+  Tempo* tempo;
   NoteSequence* sequence;
 
+  tempo = BuildTestTempo ();
   sequence = BuildTestNoteSequence();
-  score = BuildScore(Standard, sequence);
+  score = BuildScore(tempo, sequence);
 
   return score;
+}
+
+Tempo* BuildTestTempo()
+{
+  Tempo* tempo;
+
+  tempo = BuildTempo(120, QuarterNote);
+  return tempo;
 }
 
 NoteSequence* BuildTestNoteSequence()
@@ -65,6 +74,6 @@ NoteSequence* BuildTestNoteSequence()
   sequence->AddNote(sequence, BuildNote(notesv, duration))
 void AddTestNotes(NoteSequence* sequence)
 {
-  AddTestNote(A, 4);
-  AddTestNote(C, 2);
+  AddTestNote(A, QuarterNote);
+  AddTestNote(C, WholeNote);
 }

@@ -1,6 +1,8 @@
 #ifndef NOTE_H
 #define NOTE_H
 
+#define TICK_SIZE 128
+
 typedef enum
 {
   UnknownNote = 0x0,
@@ -12,21 +14,30 @@ typedef enum
   E = 0x6,
   F = 0x7,
   G = 0x8
-} Notes;
+} Pitch;
+
+typedef enum
+{
+  WholeNote = TICK_SIZE,
+  HalfNote = TICK_SIZE / 2,
+  QuarterNote = TICK_SIZE / 4,
+  EigthNote = TICK_SIZE / 8,
+  SixteenthNote = TICK_SIZE / 16
+} NoteValue;
 
 typedef struct Note Note;
 
 struct Note
 {
-  Notes Value;
-  unsigned int Duration;
+  Pitch Pitch;
+  NoteValue Value;
   unsigned int Spent;
 
   int (*IsComplete) (Note* note);
-  Notes (*Tick) (Note* note);
+  Pitch (*Tick) (Note* note);
 };
 
-Note* BuildNote(Notes value, unsigned int duration);
+Note* BuildNote(Pitch pitch, NoteValue value);
 void DestroyNote(Note* note);
 
 #endif

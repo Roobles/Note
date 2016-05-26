@@ -3,16 +3,16 @@
 
 // Static Functions
 static int IsComplete_Internal (Note* note);
-static Notes Tick_Internal (Note* note);
+static Pitch Tick_Internal (Note* note);
 
 // note.h Implementation
-Note* BuildNote(Notes value, unsigned int duration)
+Note* BuildNote(Pitch pitch, NoteValue value)
 {
   Note* note;
 
   note = malloc (sizeof (Note));
+  note->Pitch = pitch;
   note->Value = value;
-  note->Duration = duration;
   note->Spent = 0x0;
 
   note->IsComplete = IsComplete_Internal;
@@ -24,7 +24,7 @@ Note* BuildNote(Notes value, unsigned int duration)
 void DestroyNote(Note* note)
 {
   note->Value = 0x0;
-  note->Duration = 0x0;
+  note->Pitch = 0x0;
   note->Spent = 0x0;
 
   note->IsComplete = NULL;
@@ -35,14 +35,14 @@ void DestroyNote(Note* note)
 
 static int IsComplete_Internal (Note* note)
 {
-  return note == NULL || note->Spent >= note->Duration;
+  return note == NULL || note->Spent >= note->Value;
 }
 
-static Notes Tick_Internal (Note* note)
+static Pitch Tick_Internal (Note* note)
 {
   if (note == NULL || note->IsComplete(note))
     return Rest;
 
   ++note->Spent;
-  return note->Value;
+  return note->Pitch;
 }
