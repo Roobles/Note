@@ -19,6 +19,7 @@ struct NoteSequence
 {
   NoteIttr* CurrentNote;
   NoteIttr* FirstNote;
+  NoteIttr* LastNote;
 
   int Length;
   int IsConstructed;

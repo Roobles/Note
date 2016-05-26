@@ -16,6 +16,8 @@ typedef struct
   NoteSequence* Notes;
 } Score;
 
-NoteSequence* BuildScore (Tempo tempo, Score* score);
+Score* BuildScore (Tempo tempo, NoteSequence* sequence);
+void DestroyScore (Score* score);
+void PrintScore (Score* score);
 
 #endif

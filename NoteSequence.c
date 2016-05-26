@@ -35,6 +35,9 @@ void DestroyNoteIttr(NoteIttr* ittr)
 
   note = ittr->Note;
   DestroyNote(note);
+
+  ittr->NextNote = NULL;
+  ittr->Note = NULL;
   free (ittr);
 }
 
@@ -48,6 +51,7 @@ NoteSequence* BuildNoteSequence()
 
   sequence->CurrentNote = NULL;
   sequence->FirstNote = NULL;
+  sequence->LastNote = NULL;
 
   sequence->NextNote = NextNote_Internal;
   sequence->AddNote = AddNote_Internal;
@@ -67,6 +71,7 @@ void DestroyNoteSequence(NoteSequence* sequence)
 
   sequence->CurrentNote = NULL;
   sequence->FirstNote = NULL;
+  sequence->LastNote = NULL;
 
   sequence->NextNote = NULL;
   sequence->AddNote = NULL;
@@ -78,21 +83,48 @@ void DestroyNoteSequence(NoteSequence* sequence)
 // Static Function Implementations
 static Note* NextNote_Internal (NoteSequence* sequence)
 {
+  Note* note;
   NoteIttr** current;
 
   if(sequence == NULL || (current = &sequence->CurrentNote) == NULL || *current == NULL || sequence->FirstNote == NULL)
     return NULL;
   
-  *current = (*current)->NextNote;
-  return (*current == NULL)
+  note = (*current == NULL)
     ? NULL
     : (*current)->Note;
+
+  *current = (*current)->NextNote;
+  return note;
 }
 
 static void AddNote_Internal (NoteSequence* sequence, Note* note)
 {
+  NoteIttr** last;
+  NoteIttr* noteIttr;
+
+  if (sequence == NULL || note == NULL)
+    return;
+
+  ++sequence->Length;
+  noteIttr = BuildNoteIttr(note, NULL);
+
+  // If this is the first note, set things up.
+  if (sequence->FirstNote == NULL || sequence->CurrentNote == NULL || sequence->LastNote == NULL)
+  {
+    sequence->CurrentNote = sequence->FirstNote = sequence->LastNote = noteIttr;
+    return;
+  }
+
+  // Other notes exist.
+  last = &sequence->LastNote;
+  (*last)->NextNote = noteIttr;
+  *last = noteIttr;
 }
 
 static void Reset_Internal (NoteSequence* sequence)
 {
+  if (sequence == NULL || sequence->FirstNote == NULL)
+    return;
+
+  sequence->CurrentNote = sequence->FirstNote;
 }

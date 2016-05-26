@@ -12,7 +12,7 @@ typedef struct
   Score* Score;
 } WavFile;
 
-WavFile* BuildWavFile(char* name);
+WavFile* BuildWavFile(char* name, Score* score);
 void DestroyWavFile(WavFile* file);
 
 #endif

@@ -16,6 +16,7 @@ SRC_FILES=()
 SRC_FILES+=(music.c)
 SRC_FILES+=(wav.c)
 SRC_FILES+=(note.c)
+SRC_FILES+=(score.c)
 SRC_FILES+=(NoteSequence.c)
 
 # Base Command
