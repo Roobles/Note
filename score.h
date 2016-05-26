@@ -2,7 +2,7 @@
 #define SCORE_H
 
 #include "note.h"
-#include "NoteSequence.h"
+#include "notesequence.h"
 
 typedef enum
 {

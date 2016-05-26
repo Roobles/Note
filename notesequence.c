@@ -1,13 +1,13 @@
 #include <stdlib.h>
 #include "note.h"
-#include "NoteSequence.h"
+#include "notesequence.h"
 
 // Static Function Declarations
 static Note* NextNote_Internal (NoteSequence* sequence);
 static void AddNote_Internal (NoteSequence* sequence, Note* note);
 static void Reset_Internal (NoteSequence* sequence);
 
-// NoteSequence.h Implementation
+// notesequence.h Implementation
 NoteIttr* BuildNoteIttr(Note* note, NoteIttr* next)
 {
   // TODO: Implement this.

@@ -17,7 +17,7 @@ SRC_FILES+=(music.c)
 SRC_FILES+=(wav.c)
 SRC_FILES+=(note.c)
 SRC_FILES+=(score.c)
-SRC_FILES+=(NoteSequence.c)
+SRC_FILES+=(notesequence.c)
 
 # Base Command
 BUILD_CMD=(gcc)
