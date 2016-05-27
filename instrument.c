@@ -4,7 +4,9 @@
 // Static Function Declarations
 static void SetNoteSource_Internal (Instrument* instrument, NoteSource* NoteSource);
 static Note* GetCurrentInstrumentNote_Internal (Instrument* instrument);
-static int PlayTick_Internal (Instrument* instrument);
+static int PlaySample_Internal (Instrument* instrument, Tempo* tempo, SampleDefinition* sample);
+static Pitch GetCurrentInstrumentPitch_Internal (Instrument* instrument, Tempo* tempo, SampleDefinition* sample);
+static int GetSamplesPerTick_Internal (Tempo* tempo, SampleDefinition* sample);
 
 // instrument.h Implementation
 Instrument* BuildInstrument()
@@ -15,8 +17,11 @@ Instrument* BuildInstrument()
   instrument->CurrentNote = NULL;
   instrument->NoteSource = NULL;
 
+  instrument->CurrentPitch = UnknownNote;
+  instrument->CurrentSampleCount = 0;
+
   instrument->SetNoteSource = SetNoteSource_Internal;
-  instrument->PlayTick = PlayTick_Internal;
+  instrument->PlaySample = PlaySample_Internal;
 
   return instrument;
 }
@@ -25,8 +30,12 @@ void DestroyInstrument(Instrument* instrument)
 {
   instrument->CurrentNote = NULL;
   instrument->NoteSource = NULL;
+
+  instrument->CurrentPitch = UnknownNote;
+  instrument->CurrentSampleCount = 0;
+
   instrument->SetNoteSource = NULL;
-  instrument->PlayTick = NULL;
+  instrument->PlaySample = NULL;
 
   free (instrument);
 }
@@ -39,13 +48,34 @@ static void SetNoteSource_Internal (Instrument* instrument, NoteSource* NoteSour
   instrument->NoteSource = NoteSource;
 }
 
-static int PlayTick_Internal (Instrument* instrument)
+static int PlaySample_Internal (Instrument* instrument, Tempo* tempo, SampleDefinition* sample)
+{
+  Pitch samplePitch;
+  int *currentSample;
+
+  currentSample = &instrument->CurrentSampleCount;
+  samplePitch = GetCurrentInstrumentPitch_Internal (instrument, tempo, sample);
+  ++(*currentSample);
+
+  return samplePitch;
+}
+
+static Pitch GetCurrentInstrumentPitch_Internal (Instrument* instrument, Tempo* tempo, SampleDefinition* sample)
 {
   Note* note;
-  Pitch tickPitch;
+  Pitch targetPitch, *currentPitch;
+  int samplesPerTick, *currentSample;
   
   note = GetCurrentInstrumentNote_Internal (instrument);
-  tickPitch = note->Tick (note);
+  currentSample = &instrument->CurrentSampleCount;
+  samplesPerTick = GetSamplesPerTick_Internal (tempo, sample);
+  currentPitch = &instrument->CurrentPitch;
+
+  targetPitch = (*currentPitch == UnknownNote || !(*currentSample % samplesPerTick))
+    ? (note != NULL)
+        ? (*currentPitch = note->Tick (note))
+        : UnknownNote
+    : *currentPitch;
 }
 
 static Note* GetCurrentInstrumentNote_Internal (Instrument* instrument)
@@ -66,4 +96,14 @@ static Note* GetCurrentInstrumentNote_Internal (Instrument* instrument)
     *cNote = targetNote;
 
   return targetNote;
+}
+
+static int GetSamplesPerTick_Internal (Tempo* tempo, SampleDefinition* sample)
+{
+  int samplesPerSecond, ticksPerSecond;
+
+  samplesPerSecond = sample->SamplesPerSecond;
+  ticksPerSecond = tempo->TicksPerSecond;
+
+  return samplesPerSecond / ticksPerSecond;
 }

@@ -20,6 +20,7 @@ SRC_FILES+=(tempo.c)
 SRC_FILES+=(score.c)
 SRC_FILES+=(instrument.c)
 SRC_FILES+=(notesequence.c)
+SRC_FILES+=(sampledefinition.c)
 
 # Base Command
 BUILD_CMD=(gcc)
