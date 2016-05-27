@@ -35,6 +35,7 @@ struct Note
 
   int (*IsComplete) (Note* note);
   Pitch (*Tick) (Note* note);
+  void (*Reset) (Note* note);
 };
 
 Note* BuildNote(Pitch pitch, NoteValue value);

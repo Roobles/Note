@@ -89,11 +89,10 @@ static Note* NextNote_Internal (NoteSequence* sequence)
   if(sequence == NULL || (current = &sequence->CurrentNote) == NULL || *current == NULL || sequence->FirstNote == NULL)
     return NULL;
   
-  note = (*current == NULL)
-    ? NULL
-    : (*current)->Note;
-
+  note = (*current)->Note;
+  if (note != NULL) note->Reset(note);
   *current = (*current)->NextNote;
+  
   return note;
 }
 

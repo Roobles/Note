@@ -4,6 +4,7 @@
 // Static Functions
 static int IsComplete_Internal (Note* note);
 static Pitch Tick_Internal (Note* note);
+static void Reset_Internal (Note* note);
 
 // note.h Implementation
 Note* BuildNote(Pitch pitch, NoteValue value)
@@ -17,6 +18,7 @@ Note* BuildNote(Pitch pitch, NoteValue value)
 
   note->IsComplete = IsComplete_Internal;
   note->Tick = Tick_Internal;
+  note->Reset = Reset_Internal;
 
   return note;
 }
@@ -29,6 +31,7 @@ void DestroyNote(Note* note)
 
   note->IsComplete = NULL;
   note->Tick = NULL;
+  note->Reset = NULL;
 
   free (note);
 }
@@ -45,4 +48,11 @@ static Pitch Tick_Internal (Note* note)
 
   ++note->Spent;
   return note->Pitch;
+}
+
+static void Reset_Internal (Note* note)
+{
+  if (note == NULL) return;
+
+  note->Spent = 0x0;
 }

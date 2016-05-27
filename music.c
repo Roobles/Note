@@ -2,27 +2,43 @@
 #include <stdlib.h>
 
 #include "wav.h"
+#include "instrument.h"
+#include "score.h"
 
 // Declarations
-WavFile* BuildTestFile();
-NoteSequence* BuildTestNoteSequence();
-Score* BuildTestScore();
-Tempo* BuildTestTempo();
-void AddTestNotes(NoteSequence* sequence);
+WavFile* BuildTestFile ();
+Instrument* BuildTestInstrument ();
+NoteSequence* BuildTestNoteSequence ();
+Score* BuildTestScore ();
+Tempo* BuildTestTempo ();
+void AddTestNotes (NoteSequence* sequence);
 
 // Main
 int main (int argc, char** argv)
 {
-  WavFile* testFile;
+  Instrument* instrument;
   Score* score;
 
-  testFile = BuildTestFile ();
-  score = testFile->Score;
+  instrument = BuildInstrument();
+  score = BuildTestScore();
+
+  instrument->SetNoteSource(instrument, (NoteSource*) score->Notes);
+
+  instrument->PlayTick(instrument);
 
   PrintScore (score);
-  DestroyWavFile (testFile);
+  DestroyScore (score);
+  DestroyInstrument (instrument);
 
   return 0;
+}
+
+Instrument* BuildTestInstrument ()
+{
+  Instrument* instrument;
+  instrument = BuildInstrument ();
+
+  return instrument;
 }
 
 // Functions
@@ -39,7 +55,7 @@ WavFile* BuildTestFile ()
   return testFile;
 }
 
-Score* BuildTestScore()
+Score* BuildTestScore ()
 {
   Score* score;
   Tempo* tempo;
@@ -52,7 +68,7 @@ Score* BuildTestScore()
   return score;
 }
 
-Tempo* BuildTestTempo()
+Tempo* BuildTestTempo ()
 {
   Tempo* tempo;
 
@@ -60,7 +76,7 @@ Tempo* BuildTestTempo()
   return tempo;
 }
 
-NoteSequence* BuildTestNoteSequence()
+NoteSequence* BuildTestNoteSequence ()
 {
   NoteSequence* sequence;
   sequence = BuildNoteSequence();
@@ -72,7 +88,7 @@ NoteSequence* BuildTestNoteSequence()
 
 #define AddTestNote(notesv, duration) \
   sequence->AddNote(sequence, BuildNote(notesv, duration))
-void AddTestNotes(NoteSequence* sequence)
+void AddTestNotes (NoteSequence* sequence)
 {
   AddTestNote(A, QuarterNote);
   AddTestNote(C, WholeNote);

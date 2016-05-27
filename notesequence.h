@@ -17,6 +17,8 @@ struct NoteIttr
 
 struct NoteSequence
 {
+  Note* (*NextNote) (NoteSequence* sequence);
+
   NoteIttr* CurrentNote;
   NoteIttr* FirstNote;
   NoteIttr* LastNote;
@@ -24,7 +26,6 @@ struct NoteSequence
   int Length;
   int IsConstructed;
 
-  Note* (*NextNote) (NoteSequence* sequence);
   void (*AddNote) (NoteSequence* sequence, Note* note);
   void (*Reset) (NoteSequence* sequence);
 };

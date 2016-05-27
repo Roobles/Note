@@ -2,11 +2,20 @@
 #define INSTRUMENT_H
 
 #include "note.h"
-#include "score.h"
+#include "notesource.h"
 
-typedef struct
+typedef struct Instrument Instrument;
+
+struct Instrument
 {
   Note* CurrentNote;
-} Instrument;
+  NoteSource* NoteSource;
+
+  void (*SetNoteSource) (Instrument* instrument, NoteSource* NoteSource);
+  int (*PlayTick) (Instrument* instrument);
+};
+
+Instrument* BuildInstrument();
+void DestroyInstrument(Instrument* instrument);
 
 #endif
