@@ -7,13 +7,13 @@ typedef enum
 {
   UnknownNote = 0x0,
   Rest = 0x1,
-  A = 0x2,
-  B = 0x3,
-  C = 0x4,
-  D = 0x5,
-  E = 0x6,
-  F = 0x7,
-  G = 0x8
+  A = 440,
+  B = 493,
+  C = 261,
+  D = 293,
+  E = 329,
+  F = 349,
+  G = 392
 } Pitch;
 
 typedef enum

@@ -3,13 +3,13 @@
 
 #include "wav.h"
 
-WavFile* BuildWavFile(char* name, Score* score)
+WavFile* BuildWavFile(char* name, MusicSequence* music)
 {
   WavFile* file;
 
   file = malloc (sizeof (WavFile));
   strncpy (file->Name, name, MAX_WAV_FILE_NAME);
-  file->Score = score;
+  file->Music = music;
 
   return file;
 }
@@ -17,6 +17,6 @@ WavFile* BuildWavFile(char* name, Score* score)
 void DestroyWavFile(WavFile* file)
 {
   strcpy (file->Name, "");
-  DestroyScore (file->Score);
+  DestroyMusicSequence (file->Music);
   free (file);
 }

@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <math.h>
 #include "instrument.h"
 
 // Static Function Declarations
@@ -52,12 +53,30 @@ static int PlaySample_Internal (Instrument* instrument, Tempo* tempo, SampleDefi
 {
   Pitch samplePitch;
   int *currentSample;
+  double value, frequency, volPercent, radiansConv,
+    sampleRate, sampleDepth, sampleTick;
+
+  sampleRate = (double) sample->SamplesPerSecond;
+  sampleDepth = (double) pow (sample->BitsPerSample, 2);
+  volPercent = (double) .5;
 
   currentSample = &instrument->CurrentSampleCount;
   samplePitch = GetCurrentInstrumentPitch_Internal (instrument, tempo, sample);
-  ++(*currentSample);
+  frequency = (double) samplePitch;
+  sampleTick = (double) *currentSample;
 
-  return samplePitch;
+  #define PI 3.14159265
+  radiansConv = (double) PI / (double) 180;
+  value = sin (sampleTick * radiansConv);
+  value = (value * sampleDepth) / 2;
+  value += (sampleDepth / 2);
+
+  value = floor (sin (2 * sampleTick * radiansConv) * (sampleDepth / 2));
+  value += (sampleDepth / 2);
+
+  *currentSample = (*currentSample + 1) % (int)sampleRate;
+
+  return (int) value;
 }
 
 static Pitch GetCurrentInstrumentPitch_Internal (Instrument* instrument, Tempo* tempo, SampleDefinition* sample)

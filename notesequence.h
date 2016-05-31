@@ -28,6 +28,7 @@ struct NoteSequence
 
   void (*AddNote) (NoteSequence* sequence, Note* note);
   void (*Reset) (NoteSequence* sequence);
+  int (*GetTickCount) (NoteSequence* sequence);
 };
 
 NoteIttr* BuildNoteIttr(Note* note, NoteIttr* next);

@@ -4,14 +4,16 @@
 #include "wav.h"
 #include "instrument.h"
 #include "score.h"
+#include "musician.h"
 #include "sampledefinition.h"
 
 // Declarations
-WavFile* BuildTestFile ();
+WavFile* BuildTestFile (MusicSequence* music);
 Instrument* BuildTestInstrument ();
 NoteSequence* BuildTestNoteSequence ();
 Score* BuildTestScore ();
 Tempo* BuildTestTempo ();
+Musician* BuildTestMusician ();
 SampleDefinition* BuildTestSampleDefinition ();
 void AddTestNotes (NoteSequence* sequence);
 
@@ -20,23 +22,23 @@ int main (int argc, char** argv)
 {
   Score* score;
   Tempo* tempo;
-  Instrument* instrument;
+  Musician* musician;
+  MusicSequence* music;
   SampleDefinition* sample;
+  WavFile* file;
   int sampleVal, i;
 
-  instrument = BuildInstrument ();
   score = BuildTestScore ();
   sample = BuildTestSampleDefinition ();
   tempo = score->Tempo;
+  musician = BuildTestMusician ();
 
-  instrument->SetNoteSource(instrument, (NoteSource*) score->Notes);
-  i = 1;
-  for (sampleVal = -1; sampleVal; sampleVal = instrument->PlaySample(instrument, tempo, sample))
-    if (sampleVal > 0) printf ("Sample (%05d): %d\n", i++, sampleVal);
+  music = musician->Play (musician, score, sample);
+  file = BuildTestFile (music);
 
-  PrintScore (score);
   DestroyScore (score);
-  DestroyInstrument (instrument);
+  DestroyWavFile (file);
+  DestroyMusician (musician);
 
   return 0;
 }
@@ -49,16 +51,24 @@ Instrument* BuildTestInstrument ()
   return instrument;
 }
 
+Musician* BuildTestMusician ()
+{
+  Instrument* instrument;
+  Musician* musician;
+
+  instrument = BuildTestInstrument ();
+  //instrument->SetNoteSource(instrument, (NoteSource*) score->Notes);
+  musician = BuildMusician (instrument);
+
+  return musician;
+}
+
 // Functions
-WavFile* BuildTestFile ()
+WavFile* BuildTestFile (MusicSequence* music)
 {
   char* wavName = "TestName";
-  NoteSequence* sequence;
-  Score* score;
   WavFile* testFile;
-
-  score = BuildTestScore ();
-  testFile = BuildWavFile (wavName, score);
+  testFile = BuildWavFile (wavName, music);
 
   return testFile;
 }

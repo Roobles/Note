@@ -18,9 +18,15 @@ SRC_FILES+=(wav.c)
 SRC_FILES+=(note.c)
 SRC_FILES+=(tempo.c)
 SRC_FILES+=(score.c)
+SRC_FILES+=(musician.c)
 SRC_FILES+=(instrument.c)
 SRC_FILES+=(notesequence.c)
+SRC_FILES+=(musicsequence.c)
 SRC_FILES+=(sampledefinition.c)
+
+# Libraries
+SRC_LIB=()
+SRC_LIB+=(m)
 
 # Base Command
 BUILD_CMD=(gcc)
@@ -33,6 +39,10 @@ BUILD_CMD+=(-o "\"${OUTPUT_BIN}\"")
 
 # Add Options
 BUILD_CMD+=(${BUILD_OPTS})
+
+for lib in ${SRC_LIB[@]}; do
+  BUILD_CMD+=(-l${lib})
+done
 
 # Validations
 [ ! -d "${BIN_DIR}" ] && mkdir "${BIN_DIR}"

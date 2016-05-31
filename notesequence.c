@@ -6,6 +6,7 @@
 static Note* NextNote_Internal (NoteSequence* sequence);
 static void AddNote_Internal (NoteSequence* sequence, Note* note);
 static void Reset_Internal (NoteSequence* sequence);
+static int GetTickCount_Internal (NoteSequence* sequence);
 
 // notesequence.h Implementation
 NoteIttr* BuildNoteIttr(Note* note, NoteIttr* next)
@@ -56,6 +57,7 @@ NoteSequence* BuildNoteSequence()
   sequence->NextNote = NextNote_Internal;
   sequence->AddNote = AddNote_Internal;
   sequence->Reset = Reset_Internal;
+  sequence->GetTickCount = GetTickCount_Internal;
 
   return sequence;
 }
@@ -76,6 +78,7 @@ void DestroyNoteSequence(NoteSequence* sequence)
   sequence->NextNote = NULL;
   sequence->AddNote = NULL;
   sequence->Reset = NULL;
+  sequence->GetTickCount = NULL;
 
   free (sequence);
 }
@@ -126,4 +129,22 @@ static void Reset_Internal (NoteSequence* sequence)
     return;
 
   sequence->CurrentNote = sequence->FirstNote;
+}
+
+static int GetTickCount_Internal (NoteSequence* sequence)
+{
+  int tickCount;
+  NoteIttr* note;
+  
+  tickCount = 0;
+  if (sequence == NULL) return 0;
+
+  note = sequence->FirstNote;
+  while (note != NULL)
+  {
+    tickCount += note->Note->Value;
+    note = note->NextNote;
+  }
+  
+  return tickCount;
 }
