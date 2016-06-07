@@ -2,8 +2,16 @@
 #define WAV_H
 
 #include "musicsequence.h"
+#include "sampledefinition.h"
 
 #define MAX_WAV_FILE_NAME 255
+
+typedef struct WavStream WavStream;
+struct WavStream
+{
+  int Length;
+  char* Stream;
+};
 
 typedef struct WavFile WavFile;
 struct WavFile
@@ -28,9 +36,15 @@ struct WavFile
   int DataSize;
   char* Data; 
   char Padding;
+
+  WavStream* (*ToWavStream) (WavFile* file);
+  void (*WriteToFile) (WavFile* file, WavStream* stream, const char* location);
 };
 
-WavFile* BuildWavFile(char* name, MusicSequence* music);
-void DestroyWavFile(WavFile* file);
+WavFile* BuildWavFile (char* name, MusicSequence* music, SampleDefinition* sample);
+void DestroyWavFile (WavFile* file);
+
+WavStream* BuildWavStream (int length);
+void DestroyWavStream (WavStream* stream);
 
 #endif

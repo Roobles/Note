@@ -57,7 +57,7 @@ static int PlaySample_Internal (Instrument* instrument, Tempo* tempo, SampleDefi
     sampleRate, sampleDepth, sampleTick;
 
   sampleRate = (double) sample->SamplesPerSecond;
-  sampleDepth = (double) pow (sample->BitsPerSample, 2);
+  sampleDepth = (double) (pow (2, sample->BitsPerSample) - 1);
   volPercent = (double) .5;
 
   currentSample = &instrument->CurrentSampleCount;
@@ -71,8 +71,9 @@ static int PlaySample_Internal (Instrument* instrument, Tempo* tempo, SampleDefi
   value = (value * sampleDepth) / 2;
   value += (sampleDepth / 2);
 
-  value = floor (sin (2 * sampleTick * radiansConv) * (sampleDepth / 2));
+  value = floor (sin (14 * sampleTick * radiansConv) * (sampleDepth / 2));
   value += (sampleDepth / 2);
+  value *= volPercent;
 
   *currentSample = (*currentSample + 1) % (int)sampleRate;
 

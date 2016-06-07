@@ -8,7 +8,7 @@
 #include "sampledefinition.h"
 
 // Declarations
-WavFile* BuildTestFile (MusicSequence* music);
+WavFile* BuildTestFile (MusicSequence* music, SampleDefinition* sample);
 Instrument* BuildTestInstrument ();
 NoteSequence* BuildTestNoteSequence ();
 Score* BuildTestScore ();
@@ -26,7 +26,9 @@ int main (int argc, char** argv)
   MusicSequence* music;
   SampleDefinition* sample;
   WavFile* file;
+  WavStream* stream;
   int sampleVal, i;
+  char* location = "./";
 
   score = BuildTestScore ();
   sample = BuildTestSampleDefinition ();
@@ -34,11 +36,14 @@ int main (int argc, char** argv)
   musician = BuildTestMusician ();
 
   music = musician->Play (musician, score, sample);
-  file = BuildTestFile (music);
+  file = BuildTestFile (music, sample);
+  stream = file->ToWavStream (file);
+  file->WriteToFile (file, stream, location);
 
   DestroyScore (score);
   DestroyWavFile (file);
   DestroyMusician (musician);
+  DestroyWavStream (stream);
 
   return 0;
 }
@@ -64,11 +69,11 @@ Musician* BuildTestMusician ()
 }
 
 // Functions
-WavFile* BuildTestFile (MusicSequence* music)
+WavFile* BuildTestFile (MusicSequence* music, SampleDefinition* sample)
 {
   char* wavName = "TestName";
   WavFile* testFile;
-  testFile = BuildWavFile (wavName, music);
+  testFile = BuildWavFile (wavName, music, sample);
 
   return testFile;
 }
