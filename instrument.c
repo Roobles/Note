@@ -75,7 +75,7 @@ static int PlaySample_Internal (Instrument* instrument, Tempo* tempo, SampleDefi
   value += (sampleDepth / 2);
   value *= volPercent;
 
-  *currentSample = (*currentSample + 1) % (int)sampleRate;
+  ++*currentSample;
 
   return (int) value;
 }
