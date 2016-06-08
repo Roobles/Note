@@ -66,12 +66,8 @@ static int PlaySample_Internal (Instrument* instrument, Tempo* tempo, SampleDefi
   sampleTick = (double) *currentSample;
 
   #define PI 3.14159265
-  radiansConv = (double) PI / (double) 180;
-  value = sin (sampleTick * radiansConv);
-  value = (value * sampleDepth) / 2;
-  value += (sampleDepth / 2);
-
-  value = floor (sin (22 * sampleTick * radiansConv) * (sampleDepth / 2));
+  radiansConv = ((double) 2 * (double) PI) / (double) sampleRate;
+  value = floor (sin (frequency * sampleTick * radiansConv) * (sampleDepth / 2));
   value += (sampleDepth / 2);
   value *= volPercent;
 

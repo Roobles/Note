@@ -41,9 +41,6 @@ int main (int argc, char** argv)
   stream = file->ToWavStream (file);
   file->WriteToFile (file, stream, location);
 
-  frequency = music->GetFrequency (music, 0, sample->SamplesPerSecond, 1);
-  printf ("Current Frequency: %d\n", (int) frequency);
-
   DestroyScore (score);
   DestroyWavFile (file);
   DestroyMusician (musician);
@@ -118,7 +115,11 @@ NoteSequence* BuildTestNoteSequence ()
 void AddTestNotes (NoteSequence* sequence)
 {
   AddTestNote(A, QuarterNote);
-  AddTestNote(C, WholeNote);
+  AddTestNote(C, QuarterNote);
+  AddTestNote(A, QuarterNote);
+  AddTestNote(D, QuarterNote);
+  AddTestNote(A, QuarterNote);
+  AddTestNote(C, QuarterNote);
 }
 
 SampleDefinition* BuildTestSampleDefinition ()
