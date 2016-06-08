@@ -10,6 +10,7 @@ struct MusicSequence
 
   int (*AddSample) (MusicSequence* music, int sample);
   void (*PrintDebug) (MusicSequence* music);
+  double (*GetFrequency) (MusicSequence* music, int offset, int span, int spansPerSecond);
 };
 
 MusicSequence* BuildMusicSequence (int length);

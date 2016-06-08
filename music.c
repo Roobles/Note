@@ -29,6 +29,7 @@ int main (int argc, char** argv)
   WavStream* stream;
   int sampleVal, i;
   char* location = "./";
+  double frequency;
 
   score = BuildTestScore ();
   sample = BuildTestSampleDefinition ();
@@ -39,6 +40,9 @@ int main (int argc, char** argv)
   file = BuildTestFile (music, sample);
   stream = file->ToWavStream (file);
   file->WriteToFile (file, stream, location);
+
+  frequency = music->GetFrequency (music, 0, sample->SamplesPerSecond, 1);
+  printf ("Current Frequency: %d\n", (int) frequency);
 
   DestroyScore (score);
   DestroyWavFile (file);

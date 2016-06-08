@@ -71,7 +71,7 @@ static int PlaySample_Internal (Instrument* instrument, Tempo* tempo, SampleDefi
   value = (value * sampleDepth) / 2;
   value += (sampleDepth / 2);
 
-  value = floor (sin (14 * sampleTick * radiansConv) * (sampleDepth / 2));
+  value = floor (sin (22 * sampleTick * radiansConv) * (sampleDepth / 2));
   value += (sampleDepth / 2);
   value *= volPercent;
 
