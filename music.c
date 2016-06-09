@@ -114,12 +114,27 @@ NoteSequence* BuildTestNoteSequence ()
   sequence->AddNote(sequence, BuildNote(notesv, duration))
 void AddTestNotes (NoteSequence* sequence)
 {
-  AddTestNote(A, QuarterNote);
-  AddTestNote(C, QuarterNote);
-  AddTestNote(A, QuarterNote);
   AddTestNote(D, QuarterNote);
-  AddTestNote(A, QuarterNote);
   AddTestNote(C, QuarterNote);
+  AddTestNote(B, HalfNote);
+
+  AddTestNote(D, QuarterNote);
+  AddTestNote(C, QuarterNote);
+  AddTestNote(B, HalfNote);
+
+  AddTestNote(B, EigthNote);
+  AddTestNote(B, EigthNote+10);
+  AddTestNote(B, EigthNote);
+  AddTestNote(B, EigthNote+10);
+
+  AddTestNote(C, EigthNote);
+  AddTestNote(C, EigthNote+10);
+  AddTestNote(C, EigthNote);
+  AddTestNote(C, EigthNote+10);
+
+  AddTestNote(D, QuarterNote);
+  AddTestNote(C, QuarterNote);
+  AddTestNote(B, HalfNote);
 }
 
 SampleDefinition* BuildTestSampleDefinition ()
