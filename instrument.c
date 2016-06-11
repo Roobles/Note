@@ -52,9 +52,9 @@ static void SetNoteSource_Internal (Instrument* instrument, NoteSource* NoteSour
 static int PlaySample_Internal (Instrument* instrument, Tempo* tempo, SampleDefinition* sample)
 {
   Pitch samplePitch;
-  int *currentSample;
+  unsigned int *currentSample, fullPeriod;
   double value, frequency, volPercent, radiansConv,
-    sampleRate, sampleDepth, sampleTick;
+    sampleRate, sampleDepth, sampleTick, periodRange;
 
   sampleRate = (double) sample->SamplesPerSecond;
   sampleDepth = (double) (pow (2, sample->BitsPerSample) - 1);
@@ -67,7 +67,8 @@ static int PlaySample_Internal (Instrument* instrument, Tempo* tempo, SampleDefi
 
   #define PI 3.14159265
   radiansConv = ((double) 2 * (double) PI) / (double) sampleRate;
-  value = floor (sin (frequency * sampleTick * radiansConv) * (sampleDepth / 2));
+  periodRange = frequency * radiansConv;
+  value = floor (sin (periodRange * sampleTick) * (sampleDepth / 2));
   value += (sampleDepth / 2);
   value *= volPercent;
 

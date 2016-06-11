@@ -41,6 +41,13 @@ int main (int argc, char** argv)
   stream = file->ToWavStream (file);
   file->WriteToFile (file, stream, location);
 
+  // Print Frequency
+  frequency = music->GetFrequency (music, 0, sample->SamplesPerSecond, 1);
+  printf ("Frequency: %d\n", (int)frequency);
+
+  // Print Debug
+  //music->PrintDebug (music);
+
   DestroyScore (score);
   DestroyWavFile (file);
   DestroyMusician (musician);
@@ -63,7 +70,6 @@ Musician* BuildTestMusician ()
   Musician* musician;
 
   instrument = BuildTestInstrument ();
-  //instrument->SetNoteSource(instrument, (NoteSource*) score->Notes);
   musician = BuildMusician (instrument);
 
   return musician;
