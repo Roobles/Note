@@ -14,6 +14,7 @@ struct Instrument
 
   int CurrentSampleCount;
   Pitch CurrentPitch;
+  Pitch PriorPitch;
 
   void (*SetNoteSource) (Instrument* instrument, NoteSource* NoteSource);
   int (*PlaySample) (Instrument* instrument, Tempo* tempo, SampleDefinition* sample);

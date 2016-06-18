@@ -19,6 +19,7 @@ Instrument* BuildInstrument()
   instrument->NoteSource = NULL;
 
   instrument->CurrentPitch = UnknownNote;
+  instrument->PriorPitch = UnknownNote;
   instrument->CurrentSampleCount = 0;
 
   instrument->SetNoteSource = SetNoteSource_Internal;
@@ -33,6 +34,7 @@ void DestroyInstrument(Instrument* instrument)
   instrument->NoteSource = NULL;
 
   instrument->CurrentPitch = UnknownNote;
+  instrument->PriorPitch = UnknownNote;
   instrument->CurrentSampleCount = 0;
 
   instrument->SetNoteSource = NULL;
@@ -93,6 +95,8 @@ static Pitch GetCurrentInstrumentPitch_Internal (Instrument* instrument, Tempo* 
         ? (*currentPitch = note->Tick (note))
         : UnknownNote
     : *currentPitch;
+
+  return targetPitch;
 }
 
 static Note* GetCurrentInstrumentNote_Internal (Instrument* instrument)

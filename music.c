@@ -16,6 +16,7 @@ Tempo* BuildTestTempo ();
 Musician* BuildTestMusician ();
 SampleDefinition* BuildTestSampleDefinition ();
 void AddTestNotes (NoteSequence* sequence);
+void AddTestRange (NoteSequence* sequence);
 
 // Main
 int main (int argc, char** argv)
@@ -46,7 +47,7 @@ int main (int argc, char** argv)
   printf ("Frequency: %d\n", (int)frequency);
 
   // Print Debug
-  //music->PrintDebug (music);
+  music->PrintDebug (music);
 
   DestroyScore (score);
   DestroyWavFile (file);
@@ -111,7 +112,8 @@ NoteSequence* BuildTestNoteSequence ()
   NoteSequence* sequence;
   sequence = BuildNoteSequence();
 
-  AddTestNotes(sequence);
+  AddTestRange (sequence);
+  //AddTestNotes(sequence);
 
   return sequence;
 }
@@ -120,27 +122,42 @@ NoteSequence* BuildTestNoteSequence ()
   sequence->AddNote(sequence, BuildNote(notesv, duration))
 void AddTestNotes (NoteSequence* sequence)
 {
-  AddTestNote(D, QuarterNote);
-  AddTestNote(C, QuarterNote);
-  AddTestNote(B, HalfNote);
+  AddTestNote (D, QuarterNote);
+  AddTestNote (C, QuarterNote);
+  AddTestNote (B, HalfNote);
 
-  AddTestNote(D, QuarterNote);
-  AddTestNote(C, QuarterNote);
-  AddTestNote(B, HalfNote);
+  AddTestNote (D, QuarterNote);
+  AddTestNote (C, QuarterNote);
+  AddTestNote (B, HalfNote);
 
-  AddTestNote(B, EigthNote);
-  AddTestNote(B, EigthNote+10);
-  AddTestNote(B, EigthNote);
-  AddTestNote(B, EigthNote+10);
+  AddTestNote (B, EigthNote);
+  AddTestNote (B, EigthNote+10);
+  AddTestNote (B, EigthNote);
+  AddTestNote (B, EigthNote+10);
 
-  AddTestNote(C, EigthNote);
-  AddTestNote(C, EigthNote+10);
-  AddTestNote(C, EigthNote);
-  AddTestNote(C, EigthNote+10);
+  AddTestNote (C, EigthNote);
+  AddTestNote (C, EigthNote+10);
+  AddTestNote (C, EigthNote);
+  AddTestNote (C, EigthNote+10);
 
-  AddTestNote(D, QuarterNote);
-  AddTestNote(C, QuarterNote);
-  AddTestNote(B, HalfNote);
+  AddTestNote (D, QuarterNote);
+  AddTestNote (C, QuarterNote);
+  AddTestNote (B, HalfNote);
+}
+
+void AddTestRange (NoteSequence* sequence)
+{
+  int i, freqCount;
+  int startFrequency, endFrequency, 
+    frequencyGap, duration;
+
+  startFrequency = 40;
+  endFrequency = 2000;
+  frequencyGap = 10;
+  duration = EigthNote;
+
+  for (i=0; i<endFrequency; i+=frequencyGap)
+    AddTestNote (i, duration);
 }
 
 SampleDefinition* BuildTestSampleDefinition ()
