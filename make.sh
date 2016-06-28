@@ -13,11 +13,12 @@ BUILD_OPTS+=(-g)
 
 # Source Files
 SRC_FILES=()
-SRC_FILES+=(music.c)
 SRC_FILES+=(wav.c)
 SRC_FILES+=(note.c)
+SRC_FILES+=(music.c)
 SRC_FILES+=(tempo.c)
 SRC_FILES+=(score.c)
+SRC_FILES+=(period.c)
 SRC_FILES+=(musician.c)
 SRC_FILES+=(instrument.c)
 SRC_FILES+=(notesequence.c)
