@@ -4,6 +4,7 @@
 #include "tempo.h"
 #include "notesource.h"
 #include "sampledefinition.h"
+#include "periodgenerator.h"
 
 typedef struct Instrument Instrument;
 

@@ -6,6 +6,7 @@
 #include "score.h"
 #include "musician.h"
 #include "sampledefinition.h"
+#include "periodgenerator.h"
 
 // Declarations
 WavFile* BuildTestFile (MusicSequence* music, SampleDefinition* sample);
@@ -17,9 +18,18 @@ Musician* BuildTestMusician ();
 SampleDefinition* BuildTestSampleDefinition ();
 void AddTestNotes (NoteSequence* sequence);
 void AddTestRange (NoteSequence* sequence);
+void Exploratory ();
+void HotCrossBuns ();
 
 // Main
 int main (int argc, char** argv)
+{
+  //HotCrossBuns ();
+  Exploratory ();
+  return 0;
+}
+
+void HotCrossBuns ()
 {
   Score* score;
   Tempo* tempo;
@@ -53,8 +63,6 @@ int main (int argc, char** argv)
   DestroyWavFile (file);
   DestroyMusician (musician);
   DestroyWavStream (stream);
-
-  return 0;
 }
 
 Instrument* BuildTestInstrument ()
@@ -168,4 +176,25 @@ SampleDefinition* BuildTestSampleDefinition ()
   sampleRate = 8000;
   sampleSize = 16;
   sample = BuildSampleDefinition (sampleRate, sampleSize); 
+}
+
+void Exploratory ()
+{
+  SampleDefinition* definition; 
+  PeriodAnalyzer* analyzer;
+  PeriodGenerator* generator;
+  Period* period;
+
+  definition = BuildTestSampleDefinition ();
+  analyzer = BuildPeriodAnalyzer ();
+
+  generator = BuildPeriodGenerator (analyzer, definition);
+  period = generator->GeneratePeriod (generator,  255, 1300);
+
+  period->DebugPrintPeriod (period);
+  
+  DestroyPeriod (period);
+  DestroyPeriodGenerator (generator);
+  DestroySampleDefinition (definition);
+  DestroyPeriodAnalyzer (analyzer);
 }
