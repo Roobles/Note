@@ -23,6 +23,7 @@ SRC_FILES+=(musician.c)
 SRC_FILES+=(instrument.c)
 SRC_FILES+=(notesequence.c)
 SRC_FILES+=(musicsequence.c)
+SRC_FILES+=(periodanalyzer.c)
 SRC_FILES+=(sampledefinition.c)
 
 # Libraries
