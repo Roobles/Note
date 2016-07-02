@@ -184,16 +184,21 @@ void Exploratory ()
   PeriodAnalyzer* analyzer;
   PeriodGenerator* generator;
   Period* period;
+  int i;
 
   definition = BuildTestSampleDefinition ();
   analyzer = BuildPeriodAnalyzer ();
 
   generator = BuildPeriodGenerator (analyzer, definition);
-  period = generator->GeneratePeriod (generator,  255, 1300);
 
-  period->DebugPrintPeriod (period);
   
-  DestroyPeriod (period);
+  for (i=120; i<2000; i+=20)
+  {
+    period = generator->GeneratePeriod (generator,  i, 1080);
+    period->DebugPrintPeriod (period);
+    DestroyPeriod (period);
+  }
+  
   DestroyPeriodGenerator (generator);
   DestroySampleDefinition (definition);
   DestroyPeriodAnalyzer (analyzer);

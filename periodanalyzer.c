@@ -27,5 +27,5 @@ void DestroyPeriodAnalyzer(PeriodAnalyzer* analyzer)
 // Static Function Implementations
 static int GetPeriodLength_Internal (int frequency, int sampleRate)
 {
-  return (int) ceil ((double) sampleRate / (double) frequency);
+  return (int) round ((double) sampleRate / (double) frequency);
 }

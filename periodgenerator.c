@@ -3,7 +3,7 @@
 #include "periodgenerator.h"
 
 static Period* GeneratePeriod_Internal (PeriodGenerator* generator, int frequency, int amplitude);
-static int GeneratePeriodSample_Internal (PeriodGenerator* generator, int frequency, int amplitude, int i);
+static int GeneratePeriodSample_Internal (PeriodGenerator* generator, int frequency, int amplitude, double offset, int i);
 
 // PeriodGenerator.h Implementation
 PeriodGenerator* BuildPeriodGenerator (PeriodAnalyzer* analyzer, SampleDefinition* definition)
@@ -39,17 +39,21 @@ void DestroyPeriodGenerator (PeriodGenerator* generator)
 
 static Period* GeneratePeriod_Internal (PeriodGenerator* generator, int frequency, int amplitude)
 {
-  int i, sampleCount;
   int* samples;
   Period* period;
+  double offset;
+  int i, sampleCount, samplesPerSecond;
   
   ExtractGeneratorComponents();
 
-  sampleCount = analyzer->GetPeriodLength (frequency, def->SamplesPerSecond);
+  samplesPerSecond = def->SamplesPerSecond;
+  sampleCount = analyzer->GetPeriodLength (frequency, samplesPerSecond);
+  offset = ((double) 4 * (double) samplesPerSecond) / ((double) 5 * (double) frequency);
+  
   samples = malloc (sizeof (int) * sampleCount);
 
   for(i=0; i<sampleCount; i++)
-    samples[i] = GeneratePeriodSample_Internal (generator, frequency, amplitude, i);
+    samples[i] = GeneratePeriodSample_Internal (generator, frequency, amplitude, offset, i);
 
   period = BuildPeriod (frequency, amplitude, sampleCount, samples);
   free (samples);
@@ -57,22 +61,22 @@ static Period* GeneratePeriod_Internal (PeriodGenerator* generator, int frequenc
   return period;
 }
 
-static int GeneratePeriodSample_Internal (PeriodGenerator* generator, int frequency, int amplitude, int i)
+static int GeneratePeriodSample_Internal (PeriodGenerator* generator, int frequency, int amplitude, double offset, int i)
 {
-  unsigned int *currentSample, fullPeriod;
-  double value, volPercent, radiansConv,
-    sampleRate, sampleDepth, sampleTick, periodRange;
+  unsigned int *currentSample;
+  double value, radiansConv, sampleRate, sampleTick, periodRange;
 
   ExtractGeneratorComponents();
 
   sampleRate = (double) def->SamplesPerSecond;
-  sampleTick = (double) i;
+  sampleTick = (double) i + offset;
 
   #define PI 3.14159265
   radiansConv = ((double) 2 * (double) PI) / (double) sampleRate;
   periodRange = (double) frequency * radiansConv;
 
-  value = floor (sin (periodRange * sampleTick) * (amplitude / 2));
+  value = sin (periodRange * sampleTick);
+  value *= (amplitude / 2);
   value += (amplitude / 2);
 
   return (int) value;
