@@ -3,7 +3,9 @@
 
 #include "tempo.h"
 #include "notesource.h"
+#include "musicsequence.h"
 #include "sampledefinition.h"
+#include "periodanalyzer.h"
 #include "periodgenerator.h"
 
 typedef struct Instrument Instrument;
@@ -12,16 +14,15 @@ struct Instrument
 {
   Note* CurrentNote;
   NoteSource* NoteSource;
-
-  int CurrentSampleCount;
-  Pitch CurrentPitch;
-  Pitch PriorPitch;
+  SampleDefinition* SampleDefinition;
+  PeriodAnalyzer* PeriodAnalyzer;
+  PeriodGenerator* PeriodGenerator;
 
   void (*SetNoteSource) (Instrument* instrument, NoteSource* NoteSource);
-  int (*PlaySample) (Instrument* instrument, Tempo* tempo, SampleDefinition* sample);
+  MusicSequence* (*PlayNote) (Instrument* instrument, Tempo* tempo);
 };
 
-Instrument* BuildInstrument();
+Instrument* BuildInstrument(SampleDefinition* definition);
 void DestroyInstrument(Instrument* instrument);
 
 #endif

@@ -10,11 +10,11 @@
 
 // Declarations
 WavFile* BuildTestFile (MusicSequence* music, SampleDefinition* sample);
-Instrument* BuildTestInstrument ();
+Instrument* BuildTestInstrument (SampleDefinition* definition);
 NoteSequence* BuildTestNoteSequence ();
 Score* BuildTestScore ();
 Tempo* BuildTestTempo ();
-Musician* BuildTestMusician ();
+Musician* BuildTestMusician (SampleDefinition* definition);
 SampleDefinition* BuildTestSampleDefinition ();
 void AddTestNotes (NoteSequence* sequence);
 void AddTestRange (NoteSequence* sequence);
@@ -45,7 +45,7 @@ void HotCrossBuns ()
   score = BuildTestScore ();
   sample = BuildTestSampleDefinition ();
   tempo = score->Tempo;
-  musician = BuildTestMusician ();
+  musician = BuildTestMusician (sample);
 
   music = musician->Play (musician, score, sample);
   file = BuildTestFile (music, sample);
@@ -65,20 +65,20 @@ void HotCrossBuns ()
   DestroyWavStream (stream);
 }
 
-Instrument* BuildTestInstrument ()
+Instrument* BuildTestInstrument (SampleDefinition* definition)
 {
   Instrument* instrument;
-  instrument = BuildInstrument ();
+  instrument = BuildInstrument (definition);
 
   return instrument;
 }
 
-Musician* BuildTestMusician ()
+Musician* BuildTestMusician (SampleDefinition* definition)
 {
   Instrument* instrument;
   Musician* musician;
 
-  instrument = BuildTestInstrument ();
+  instrument = BuildTestInstrument (definition);
   musician = BuildMusician (instrument);
 
   return musician;
@@ -164,7 +164,7 @@ void AddTestRange (NoteSequence* sequence)
   frequencyGap = 10;
   duration = EigthNote;
 
-  for (i=0; i<endFrequency; i+=frequencyGap)
+  for (i=startFrequency; i<endFrequency; i+=frequencyGap)
     AddTestNote (i, duration);
 }
 
@@ -180,26 +180,15 @@ SampleDefinition* BuildTestSampleDefinition ()
 
 void Exploratory ()
 {
-  SampleDefinition* definition; 
-  PeriodAnalyzer* analyzer;
-  PeriodGenerator* generator;
-  Period* period;
-  int i;
+  Score* score;
+  Instrument* instrument;
+  SampleDefinition* definition;
+  MusicSequence* music;
 
+  score = BuildTestScore ();
   definition = BuildTestSampleDefinition ();
-  analyzer = BuildPeriodAnalyzer ();
+  instrument = BuildTestInstrument (definition);
 
-  generator = BuildPeriodGenerator (analyzer, definition);
-
-  
-  for (i=120; i<2000; i+=20)
-  {
-    period = generator->GeneratePeriod (generator,  i, 1080);
-    period->DebugPrintPeriod (period);
-    DestroyPeriod (period);
-  }
-  
-  DestroyPeriodGenerator (generator);
-  DestroySampleDefinition (definition);
-  DestroyPeriodAnalyzer (analyzer);
+  instrument->SetNoteSource (instrument, (NoteSource*) score->Notes);
+  music = instrument->PlayNote (instrument, score->Tempo);
 }

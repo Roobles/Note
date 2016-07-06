@@ -5,8 +5,7 @@
 
 typedef enum
 {
-  UnknownNote = 0x0,
-  Rest = 0x1,
+  Rest = 0x0,
   A = 220,
   B = 247,
   C = 261,

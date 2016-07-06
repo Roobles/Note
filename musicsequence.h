@@ -1,6 +1,8 @@
 #ifndef MUSICSEQUENCE_H
 #define MUSICSEQUENCE_H
 
+#include "period.h"
+
 typedef struct MusicSequence MusicSequence;
 struct MusicSequence
 {
@@ -9,6 +11,7 @@ struct MusicSequence
   int Current;
 
   int (*AddSample) (MusicSequence* music, int sample);
+  int (*AddPeriod) (MusicSequence* sequence, Period* period);
   void (*PrintDebug) (MusicSequence* music);
   double (*GetFrequency) (MusicSequence* music, int offset, int span, int spansPerSecond);
 };

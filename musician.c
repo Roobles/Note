@@ -29,6 +29,7 @@ void DestroyMusician (Musician* musician)
 // Static Function Implementations
 MusicSequence* Play_Internal (Musician* musician, Score* score, SampleDefinition* sample)
 {
+  /*
   Tempo* tempo; 
   NoteSequence* notes;
   Instrument* instrument;
@@ -48,4 +49,5 @@ MusicSequence* Play_Internal (Musician* musician, Score* score, SampleDefinition
 
   while (music -> AddSample (music, instrument->PlaySample (instrument, tempo, sample)));
   return music;
+  */
 }
