@@ -113,8 +113,8 @@ NoteSequence* BuildTestNoteSequence ()
   NoteSequence* sequence;
   sequence = BuildNoteSequence();
 
-  AddTestRange (sequence);
-  //AddTestNotes(sequence);
+  //AddTestRange (sequence);
+  AddTestNotes(sequence);
 
   return sequence;
 }
@@ -132,14 +132,14 @@ void AddTestNotes (NoteSequence* sequence)
   AddTestNote (B, HalfNote);
 
   AddTestNote (B, EigthNote);
-  AddTestNote (B, EigthNote+10);
   AddTestNote (B, EigthNote);
-  AddTestNote (B, EigthNote+10);
+  AddTestNote (B, EigthNote);
+  AddTestNote (B, EigthNote);
 
   AddTestNote (C, EigthNote);
-  AddTestNote (C, EigthNote+10);
   AddTestNote (C, EigthNote);
-  AddTestNote (C, EigthNote+10);
+  AddTestNote (C, EigthNote);
+  AddTestNote (C, EigthNote);
 
   AddTestNote (D, QuarterNote);
   AddTestNote (C, QuarterNote);
