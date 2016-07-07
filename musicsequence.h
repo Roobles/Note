@@ -14,6 +14,7 @@ struct MusicSequence
   int (*AddPeriod) (MusicSequence* sequence, Period* period);
   void (*PrintDebug) (MusicSequence* music);
   double (*GetFrequency) (MusicSequence* music, int offset, int span, int spansPerSecond);
+  MusicSequence* (*Concat) (MusicSequence* base, MusicSequence* addition);
 };
 
 MusicSequence* BuildMusicSequence (int length);

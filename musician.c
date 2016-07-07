@@ -2,7 +2,7 @@
 #include "musician.h"
 
 // Static Function Declarations
-MusicSequence* Play_Internal (Musician* musician, Score* score, SampleDefinition* sample);
+MusicSequence* Play_Internal (Musician* musician, Score* score);
 
 // Musician.h Implementation
 Musician* BuildMusician (Instrument* instrument)
@@ -27,27 +27,32 @@ void DestroyMusician (Musician* musician)
 }
 
 // Static Function Implementations
-MusicSequence* Play_Internal (Musician* musician, Score* score, SampleDefinition* sample)
+MusicSequence* Play_Internal (Musician* musician, Score* score)
 {
-  /*
   Tempo* tempo; 
   NoteSequence* notes;
+  SampleDefinition* definition;
   Instrument* instrument;
-  MusicSequence* music;
-  int noteLength, samplesPerTick, totalSamples;
+  MusicSequence* note, *composition = NULL;
 
-  tempo = score->Tempo;
-  notes = score->Notes;
-  instrument = musician->Instrument;
+  if (musician == NULL
+    || score == NULL
+    || (instrument = musician->Instrument) == NULL
+    || (tempo = score->Tempo) == NULL
+    || (notes = score->Notes) == NULL)
+      return NULL;
 
-  noteLength = notes->GetTickCount (notes);
-  samplesPerTick = sample->SamplesPerSecond / tempo->TicksPerSecond;
-  totalSamples = noteLength * samplesPerTick;
+  instrument->SetNoteSource (instrument, (NoteSource*) notes);
+  while (note = instrument->PlayNote (instrument, tempo))
+  {
+    if (composition == NULL)
+    {
+      composition = note;
+      continue;
+    }
 
-  music = BuildMusicSequence (totalSamples);
-  instrument->SetNoteSource (instrument, (NoteSource*) score->Notes);
-
-  while (music -> AddSample (music, instrument->PlaySample (instrument, tempo, sample)));
-  return music;
-  */
+    composition = composition->Concat (composition, note);
+  }
+  
+  return composition;
 }

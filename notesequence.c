@@ -93,7 +93,6 @@ static Note* NextNote_Internal (NoteSequence* sequence)
     return NULL;
   
   note = (*current)->Note;
-  if (note != NULL) note->Reset(note);
   *current = (*current)->NextNote;
   
   return note;

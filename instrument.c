@@ -143,21 +143,13 @@ static MusicSequence* PlayNoteValue_Internal (Instrument* instrument, Tempo* tem
 static Note* GetCurrentInstrumentNote_Internal (Instrument* instrument)
 {
   Note* targetNote, **cNote;
-  NoteSource* nSource;
+  NoteSource* source;
 
-  if (instrument == NULL) return 0;
+  if (instrument == NULL
+    || (source = instrument->NoteSource) == NULL)
+      return NULL;
 
-  cNote = &instrument->CurrentNote;
-  nSource = instrument->NoteSource;
-
-  targetNote = (*cNote == NULL || (*cNote)->IsComplete (*cNote))
-    ? nSource->NextNote (nSource)
-    : *cNote;
-
-  if(*cNote != targetNote)
-    *cNote = targetNote;
-
-  return targetNote;
+  return source->NextNote (source);
 }
 
 static int GetPeriodsPerNote_Internal (Instrument* instrument, Note* note, Tempo* tempo, int periodLength)

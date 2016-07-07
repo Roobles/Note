@@ -10,7 +10,7 @@ typedef struct Musician Musician;
 struct Musician
 {
   Instrument* Instrument;
-  MusicSequence* (*Play) (Musician* musician, Score* score, SampleDefinition* sample);
+  MusicSequence* (*Play) (Musician* musician, Score* score);
 };
 
 Musician* BuildMusician (Instrument* instrument);

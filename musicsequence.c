@@ -7,6 +7,7 @@ static int AddSample_Internal (MusicSequence* music, int sample);
 static int AddPeriod_Internal (MusicSequence* sequence, Period* period);
 static void PrintDebug_Internal (MusicSequence* music);
 static double GetFrequency_Internal (MusicSequence* music, int offset, int span, int spansPerSecond);
+static MusicSequence* Concat_Internal (MusicSequence* base, MusicSequence* addition);
 
 // MusicSequence.h Implementation
 MusicSequence* BuildMusicSequence (int length)
@@ -18,6 +19,7 @@ MusicSequence* BuildMusicSequence (int length)
   music->Current = 0;
   music->Samples = malloc (sizeof (int) * length);
 
+  music->Concat = Concat_Internal;
   music->AddSample = AddSample_Internal;
   music->AddPeriod = AddPeriod_Internal;
   music->PrintDebug = PrintDebug_Internal;
@@ -32,6 +34,7 @@ void DestroyMusicSequence (MusicSequence* music)
 
   music->Length = 0; 
   music->Current = 0;
+  music->Concat = NULL;
   music->AddSample = NULL;
   music->AddPeriod = NULL;
   music->PrintDebug = NULL;
@@ -103,4 +106,26 @@ static double GetFrequency_Internal (MusicSequence* music, int offset, int span,
   }
 
   return (double)ticks / (double) spansPerSecond;
+}
+
+static MusicSequence* Concat_Internal (MusicSequence* base, MusicSequence* addition)
+{
+  int i, baseSize, additionSize, combinedSize;
+  MusicSequence* combined;
+
+  if (base == NULL) return addition;
+  if (addition == NULL) return NULL;
+
+  baseSize = base->Length;
+  additionSize = addition->Length;
+  combinedSize = baseSize + additionSize;
+
+  combined = BuildMusicSequence (combinedSize);
+  for (i=0; i<baseSize; i++) combined->AddSample(combined, base->Samples[i]); 
+  for (i=0; i<additionSize; i++) combined->AddSample(combined, addition->Samples[i]);
+
+  DestroyMusicSequence (base);
+  DestroyMusicSequence (addition);
+
+  return combined;
 }

@@ -24,8 +24,8 @@ void HotCrossBuns ();
 // Main
 int main (int argc, char** argv)
 {
-  //HotCrossBuns ();
-  Exploratory ();
+  HotCrossBuns ();
+  //Exploratory ();
   return 0;
 }
 
@@ -47,17 +47,10 @@ void HotCrossBuns ()
   tempo = score->Tempo;
   musician = BuildTestMusician (sample);
 
-  music = musician->Play (musician, score, sample);
+  music = musician->Play (musician, score);
   file = BuildTestFile (music, sample);
   stream = file->ToWavStream (file);
   file->WriteToFile (file, stream, location);
-
-  // Print Frequency
-  frequency = music->GetFrequency (music, 0, sample->SamplesPerSecond, 1);
-  printf ("Frequency: %d\n", (int)frequency);
-
-  // Print Debug
-  music->PrintDebug (music);
 
   DestroyScore (score);
   DestroyWavFile (file);
